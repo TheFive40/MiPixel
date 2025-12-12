@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Ti, Mi Amor 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* NAVBAR MINIMALISTA */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            z-index: 1000;
+        }
+
+        .nav-brand {
+            font-size: 1.4em;
+            font-weight: 600;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06bfd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            margin-left: auto;
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95em;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b9d;
+        }
+
+        /* HERO SECTION - BENTO BOX STYLE */
+        .hero-section {
+            margin-top: 70px;
+            padding: 60px;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(3, minmax(200px, auto));
+            gap: 20px;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* CARD BASE */
+        .bento-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(255, 107, 157, 0.1) 0%,
+            transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+
+        .bento-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 107, 157, 0.3);
+            transform: translateY(-4px);
+        }
+
+        /* HERO PRINCIPAL - Grande a la izquierda */
+        .hero-main {
+            grid-column: 1 / 8;
+            grid-row: 1 / 3;
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.15) 0%, rgba(192, 107, 253, 0.15) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .hero-main h1 {
+            font-size: 4em;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06bfd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-main p {
+            font-size: 1.3em;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .hero-emoji {
+            position: absolute;
+            font-size: 8em;
+            opacity: 0.1;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* CONTADOR - Arriba derecha */
+        .contador-card {
+            grid-column: 8 / 13;
+            grid-row: 1 / 2;
+        }
+
+        .contador-card h3 {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            color: #ff6b9d;
+            font-weight: 600;
+        }
+
+        .contador-display {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .time-box {
+            text-align: center;
+            background: rgba(255, 107, 157, 0.1);
+            border-radius: 16px;
+            padding: 20px 10px;
+        }
+
+        .time-box .num {
+            display: block;
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #ff6b9d;
+        }
+
+        .time-box .label {
+            font-size: 0.85em;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        /* STATS CARD */
+        .stats-card {
+            grid-column: 8 / 13;
+            grid-row: 2 / 3;
+            background: rgba(192, 107, 253, 0.08);
+        }
+
+        .stats-card h3 {
+            font-size: 1.2em;
+            margin-bottom: 25px;
+            color: #c06bfd;
+            font-weight: 600;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-item .value {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #c06bfd;
+        }
+
+        /* TIMELINE SECTION */
+        .timeline-section {
+            grid-column: 1 / 13;
+            grid-row: 3 / 4;
+            padding: 40px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06bfd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .timeline-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        /* CARTAS 3D */
+        .carta {
+            perspective: 1000px;
+            height: 350px;
+            cursor: pointer;
+        }
+
+        .carta-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .carta.volteada .carta-inner {
+            transform: rotateY(180deg);
+        }
+
+        .carta-front, .carta-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 35px;
+        }
+
+        .carta-front {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.2) 0%, rgba(192, 107, 253, 0.2) 100%);
+            border: 1px solid rgba(255, 107, 157, 0.3);
+        }
+
+        .carta-front .emoji {
+            font-size: 6em;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 20px rgba(255, 107, 157, 0.3));
+        }
+
+        .carta-front .numero {
+            font-size: 1.3em;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .carta-back {
+            background: rgba(255, 255, 255, 0.95);
+            color: #0a0a0a;
+            transform: rotateY(180deg);
+            border: 1px solid rgba(255, 107, 157, 0.2);
+        }
+
+        .carta-back h4 {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            color: #ff6b9d;
+            font-weight: 700;
+        }
+
+        .carta-back p {
+            font-size: 1em;
+            line-height: 1.6;
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .fecha {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06bfd 100%);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        /* GALERÍA SECTION */
+        .gallery-section {
+            padding: 60px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        .foto-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .foto-card:hover {
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .foto-img {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06bfd 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+
+        .foto-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+            padding: 30px 20px 20px;
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .foto-card:hover .foto-overlay {
+            transform: translateY(0);
+        }
+
+        .foto-overlay h4 {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #ff6b9d;
+            font-weight: 600;
+        }
+
+        .foto-overlay p {
+            font-size: 0.9em;
+            opacity: 0.9;
+            line-height: 1.4;
+        }
+
+        /* Variaciones de tamaño para galería */
+        .foto-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+        .foto-card:nth-child(6) { grid-column: span 2; grid-row: span 2; }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 80px 60px;
+            background: rgba(255, 255, 255, 0.02);
+            margin-top: 60px;
+        }
+
+        .footer p {
+            max-width: 800px;
+            margin: 0 auto 30px;
+            font-size: 1.3em;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .footer-heart {
+            font-size: 3em;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* Botón volver */
+        .btn-volver {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06bfd 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 10px 40px rgba(255, 107, 157, 0.4);
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .btn-volver:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(255, 107, 157, 0.6);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1400px) {
+            .hero-section {
+                grid-template-columns: repeat(8, 1fr);
+                padding: 40px;
+            }
+
+            .hero-main {
+                grid-column: 1 / 6;
+            }
+
+            .contador-card {
+                grid-column: 6 / 9;
+            }
+
+            .stats-card {
+                grid-column: 6 / 9;
+            }
+
+            .timeline-section {
+                grid-column: 1 / 9;
+            }
+
+            .timeline-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-section {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .hero-main, .contador-card, .stats-card, .timeline-section {
+                grid-column: 1 / -1;
+                grid-row: auto;
+            }
+
+            .hero-main h1 {
+                font-size: 2.5em;
+            }
+
+            .timeline-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .foto-card:nth-child(1),
+            .foto-card:nth-child(6) {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="nav-brand">💕 Para Markitos</div>
+    <div class="nav-links">
+        <a href="#inicio">Inicio</a>
+        <a href="#citas">Citas</a>
+        <a href="#fotos">Fotos</a>
+    </div>
+</nav>
+
+<!-- HERO BENTO BOX -->
+<section class="hero-section" id="inicio">
+    <!-- Hero Principal -->
+    <div class="bento-card hero-main">
+        <h1>Para Ti,<br>Mi Amor</h1>
+        <p>Cada momento contigo es un capítulo especial en nuestra historia. Esta es nuestra historia de amor.</p>
+        <div class="hero-emoji">💕</div>
+    </div>
+
+    <!-- Contador -->
+    <div class="bento-card contador-card">
+        <h3>⏰ Tiempo Juntos</h3>
+        <div class="contador-display">
+            <div class="time-box">
+                <span class="num" id="dias">0</span>
+                <span class="label">Días</span>
+            </div>
+            <div class="time-box">
+                <span class="num" id="horas">0</span>
+                <span class="label">Horas</span>
+            </div>
+            <div class="time-box">
+                <span class="num" id="minutos">0</span>
+                <span class="label">Min</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="bento-card stats-card">
+        <h3>📊 Nuestros Números</h3>
+        <div class="stat-item">
+            <span>Citas Especiales</span>
+            <span class="value">6</span>
+        </div>
+        <div class="stat-item">
+            <span>Recuerdos en Fotos</span>
+            <span class="value">10</span>
+        </div>
+        <div class="stat-item">
+            <span>Amor Infinito</span>
+            <span class="value">∞</span>
+        </div>
+    </div>
+</section>
+
+<!-- TIMELINE DE CITAS -->
+<section class="timeline-section" id="citas">
+    <h2 class="section-title">📅 Nuestras Citas Especiales</h2>
+    <div class="timeline-grid">
+        <div class="carta" onclick="voltearCarta(this)">
+            <div class="carta-inner">
+                <div class="carta-front">
+                    <div class="emoji">🍕</div>
+                    <div class="numero">Cita #1</div>
+                </div>
+                <div class="carta-back">
+                    <h4>Primera Cita</h4>
+                    <p>En nuestro primer encuentro, estuve un poco nervioso pero
+                        tú hiciste que me sintiera seguro.
+                        Ese día entendí que quería volver a verte muchas veces más.  </p>
+                    <div class="fecha">20 Noviembre 2025</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="carta" onclick="voltearCarta(this)">
+            <div class="carta-inner">
+                <div class="carta-front">
+                    <div class="emoji">💝</div>
+                    <div class="numero">Cita #2</div>
+                </div>
+                <div class="carta-back">
+                    <h4>Besos y abrazos</h4>
+                    <p>Fuimos al centro comercial, pero lo único que importó ese día
+                        fueron tus besos, tus abrazos y la forma en que me hacías sentir cerca de ti.</p>
+                    <div class="fecha">27 Noviembre 2025</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="carta" onclick="voltearCarta(this)">
+            <div class="carta-inner">
+                <div class="carta-front">
+                    <div class="emoji">🎬</div>
+                    <div class="numero">Cita #3</div>
+                </div>
+                <div class="carta-back">
+                    <h4>Dia de Cine</h4>
+                    <p>Fuimos al cine a ver Zootopia,
+                        pero entre miradas y sonrisas, la película pasó a segundo plano.</p>
+                    <div class="fecha">1 Diciembre 2025</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="carta" onclick="voltearCarta(this)">
+            <div class="carta-inner">
+                <div class="carta-front">
+                    <div class="emoji">👑</div>
+                    <div class="numero">Cita #4</div>
+                </div>
+                <div class="carta-back">
+                    <h4>Simplemente estar juntos</h4>
+                    <p>Fuimos al centro comercial y pasamos el rato besándonos y abrazándonos.
+                        Al final te invité a comer, y ese momentico juntos fue lo mejor del día.</p>
+                    <div class="fecha">10 Mayo 2024</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="carta" onclick="voltearCarta(this)">
+            <div class="carta-inner">
+                <div class="carta-front">
+                    <div class="emoji">🌳</div>
+                    <div class="numero">Cita #5</div>
+                </div>
+                <div class="carta-back">
+                    <h4>Visitamos el Parque Muvdi</h4>
+                    <p>Caminamos por el parque, pero la verdad… los besos se robaron todo el protagonismo. Amo cada momento así contigo.</p>
+                    <div class="fecha">7 Diciembre 2025</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="carta" onclick="voltearCarta(this)">
+            <div class="carta-inner">
+                <div class="carta-front">
+                    <div class="emoji">🌟</div>
+                    <div class="numero">Cita #6</div>
+                </div>
+                <div class="carta-back">
+                    <h4>Otra vez cine</h4>
+                    <p>Vimos FNAF 2 en el cine, y aunque la película era intensa, lo mejor de la noche fue tenerte a mi lado.</p>
+                    <div class="fecha">9 Diciembre 2025</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="gallery-section" id="fotos">
+    <h2 class="section-title">📸 Colección de Markitos</h2>
+    <div class="gallery-grid">
+        <div class="foto-card">
+            <div class="foto-img">
+                <img src="/img/markitos01.jpg" alt="Descripción de la foto">
+            </div>
+            <div class="foto-overlay">
+                <h4>Tu carita</h4>
+                <p>Esta foto captura tu carita que me enamora.</p>
+            </div>
+        </div>
+
+        <div class="foto-card">
+            <div class="foto-img">
+                <img src="/img/markitos02.jpg" alt="Descripción de la foto">
+            </div>
+            <div class="foto-overlay">
+                <h4>Momento Casual</h4>
+                <p>Te ves increíble siempre.</p>
+            </div>
+        </div>
+
+        <div class="foto-card">
+            <div class="foto-img">
+                <img src="/img/markitos03.jpg" alt="Descripción de la foto">
+            </div>
+            <div class="foto-overlay">
+                <h4>Tu de chikito</h4>
+                <p>Foto que me enviaste cuando estabas pequeñito <3</p>
+            </div>
+        </div>
+
+        <div class="foto-card">
+            <div class="foto-img">
+                <img src="/img/markitos04.jpg" alt="Descripción de la foto">
+            </div>
+            <div class="foto-overlay">
+                <h4>Tu Estilo</h4>
+                <p>Siempre te ves genial.</p>
+            </div>
+        </div>
+
+        <div class="foto-card">
+            <div class="foto-img">
+                <img src="/img/markitos05.jpg" alt="Descripción de la foto">
+            </div>
+            <div class="foto-overlay">
+                <h4>Juntos</h4>
+                <p>Mi foto favorita de nosotros.</p>
+            </div>
+        </div>
+
+        <div class="foto-card">
+            <div class="foto-img">
+                <img src="/img/markitos06.jpg" alt="Descripción de la foto">
+            </div>
+            <div class="foto-overlay">
+                <h4>Tu Mirada</h4>
+                <p>Me pierdo en tus ojos.</p>
+            </div>
+        </div>
+
+        <div class="foto-card">
+            <div class="foto-img">
+                <img src="/img/markitos07.jpg" alt="Descripción de la foto">
+            </div>
+            <div class="foto-overlay">
+                <h4>Aventura</h4>
+                <p>Cada aventura es especial.</p>
+            </div>
+        </div>
+
+        <div class="foto-card">
+            <div class="foto-img">
+                <img src="/img/markitos08.jpg" alt="Descripción de la foto">
+            </div>
+            <div class="foto-overlay">
+                <h4>Momento Divertido</h4>
+                <p>Me encanta reír contigo.</p>
+            </div>
+        </div>
+
+        <div class="foto-card">
+            <div class="foto-img">
+                <img src="/img/markitos09.jpg" alt="Descripción de la foto">
+            </div>
+            <div class="foto-overlay">
+                <h4>Perfección</h4>
+                <p>Simplemente perfecto.</p>
+            </div>
+        </div>
+
+        <div class="foto-card">
+            <div class="foto-img">
+                <img src="/img/markitos010.jpg" alt="Descripción de la foto">
+            </div>
+            <div class="foto-overlay">
+                <h4>Mi Amor</h4>
+                <p>Eres mi persona favorita.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>
+        Cada momento contigo es un regalo. Gracias por llenar mis días de amor y felicidad.
+        Esta página es solo un reflejo de todo lo que siento por ti. Te amo hoy, mañana y siempre.
+    </p>
+    <div class="footer-heart">💕</div>
+</footer>
+
+<a href="/" class="btn-volver">← Volver</a>
+
+<script>
+    function actualizarContador() {
+        const fechaInicio = new Date('2024-01-15T00:00:00');
+        const ahora = new Date();
+        const diferencia = ahora - fechaInicio;
+
+        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+
+        document.getElementById('dias').textContent = dias;
+        document.getElementById('horas').textContent = horas;
+        document.getElementById('minutos').textContent = minutos;
+    }
+
+    actualizarContador();
+    setInterval(actualizarContador, 60000);
+
+    function voltearCarta(carta) {
+        carta.classList.toggle('volteada');
+    }
+
+    // Efecto mouse para cards
+    document.querySelectorAll('.bento-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            card.style.setProperty('--mouse-x', `${x}%`);
+            card.style.setProperty('--mouse-y', `${y}%`);
+        });
+    });
+</script>
+</body>
+</html>
