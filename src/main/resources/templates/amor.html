@@ -18,7 +18,6 @@
             overflow-x: hidden;
         }
 
-        /* NAVBAR MINIMALISTA */
         .navbar {
             position: fixed;
             top: 0;
@@ -61,7 +60,6 @@
             color: #ff6b9d;
         }
 
-        /* HERO SECTION - BENTO BOX STYLE */
         .hero-section {
             margin-top: 70px;
             padding: 60px;
@@ -74,7 +72,6 @@
             margin-right: auto;
         }
 
-        /* CARD BASE */
         .bento-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -109,7 +106,6 @@
             transform: translateY(-4px);
         }
 
-        /* HERO PRINCIPAL - Grande a la izquierda */
         .hero-main {
             grid-column: 1 / 8;
             grid-row: 1 / 3;
@@ -146,7 +142,6 @@
             transform: translateY(-50%);
         }
 
-        /* CONTADOR - Arriba derecha */
         .contador-card {
             grid-column: 8 / 13;
             grid-row: 1 / 2;
@@ -217,7 +212,6 @@
             color: #c06bfd;
         }
 
-        /* TIMELINE SECTION */
         .timeline-section {
             grid-column: 1 / 13;
             grid-row: 3 / 4;
@@ -240,7 +234,6 @@
             gap: 20px;
         }
 
-        /* CARTAS 3D */
         .carta {
             perspective: 1000px;
             height: 350px;
@@ -320,7 +313,6 @@
             font-weight: 600;
         }
 
-        /* GALERÍA SECTION */
         .gallery-section {
             padding: 60px;
             max-width: 1600px;
@@ -355,6 +347,14 @@
             align-items: center;
             justify-content: center;
             font-size: 3em;
+            overflow: hidden;
+        }
+
+        .foto-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
         }
 
         .foto-overlay {
@@ -385,9 +385,76 @@
             line-height: 1.4;
         }
 
-        /* Variaciones de tamaño para galería */
         .foto-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
         .foto-card:nth-child(6) { grid-column: span 2; grid-row: span 2; }
+
+        .modal-imagen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .modal-imagen.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+            animation: zoomIn 0.3s ease;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            font-size: 2em;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 107, 157, 0.3);
+            transform: rotate(90deg);
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
         /* FOOTER */
         .footer {
@@ -415,7 +482,6 @@
             50% { transform: scale(1.15); }
         }
 
-        /* Botón volver */
         .btn-volver {
             position: fixed;
             bottom: 40px;
@@ -436,7 +502,6 @@
             box-shadow: 0 15px 50px rgba(255, 107, 157, 0.6);
         }
 
-        /* RESPONSIVE */
         @media (max-width: 1400px) {
             .hero-section {
                 grid-template-columns: repeat(8, 1fr);
@@ -504,11 +569,573 @@
                 grid-column: span 1;
                 grid-row: span 1;
             }
+
+            .modal-close {
+                top: 10px;
+                right: 10px;
+            }
+        }
+
+        .quiz-section {
+            padding: 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .quiz-container {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 107, 157, 0.1) 0%, transparent 70%);
+            opacity: 0.5;
+        }
+
+        .quiz-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .question-container {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-title {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            color: #ff6b9d;
+            font-weight: 600;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            margin-bottom: 35px;
+            opacity: 0.9;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 16px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 107, 157, 0.15);
+            border-color: rgba(255, 107, 157, 0.5);
+            transform: translateX(10px);
+        }
+
+        .option-btn.correct {
+            background: rgba(106, 170, 100, 0.3);
+            border-color: #6aaa64;
+            animation: correctPulse 0.6s ease;
+        }
+
+        .option-btn.incorrect {
+            background: rgba(220, 53, 69, 0.3);
+            border-color: #dc3545;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .feedback {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 16px;
+            font-size: 1.1em;
+            line-height: 1.6;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: rgba(106, 170, 100, 0.2);
+            border: 2px solid #6aaa64;
+            color: #a8e6a1;
+        }
+
+        .feedback.incorrect {
+            background: rgba(220, 53, 69, 0.2);
+            border: 2px solid #dc3545;
+            color: #ff8a95;
+        }
+
+        .next-btn {
+            margin-top: 25px;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06bfd 100%);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: none;
+        }
+
+        .next-btn.show {
+            display: inline-block;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
+        }
+
+        .quiz-result {
+            text-align: center;
+            display: none;
+        }
+
+        .quiz-result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-emoji {
+            font-size: 6em;
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06bfd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-text {
+            font-size: 1.3em;
+            opacity: 0.9;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .restart-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06bfd 100%);
+            border: none;
+            border-radius: 30px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 157, 0.4);
+        }
+
+        /* DEDICATORIA SECTION */
+        .dedicatoria-section {
+            padding: 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dedicatoria-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .artist-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .artist-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 107, 157, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .artist-card:hover::before {
+            opacity: 1;
+        }
+
+        .artist-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 107, 157, 0.3);
+            transform: translateY(-8px);
+        }
+
+        .artist-emoji {
+            font-size: 5em;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 20px rgba(255, 107, 157, 0.3));
+        }
+
+        .artist-name {
+            font-size: 2em;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #c06bfd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .artist-message {
+            font-size: 1.1em;
+            line-height: 1.8;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        /* CAJA DE REGALO */
+        .gift-box {
+            margin: 40px auto 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .gift-box:hover {
+            transform: scale(1.1);
+        }
+
+        .gift-lid {
+            font-size: 4em;
+            animation: giftShake 2s ease-in-out infinite;
+        }
+
+        .gift-bow {
+            display: inline-block;
+            filter: drop-shadow(0 5px 15px rgba(255, 107, 157, 0.5));
+        }
+
+        .gift-base {
+            font-size: 5em;
+            margin-top: -20px;
+            filter: drop-shadow(0 10px 20px rgba(255, 107, 157, 0.4));
+        }
+
+        .gift-text {
+            font-size: 1.1em;
+            color: #ff6b9d;
+            margin-top: 15px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        @keyframes giftShake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .modal-regalo {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal-regalo.active {
+            display: flex;
+            animation: fadeInModal 0.5s ease;
+        }
+
+        @keyframes fadeInModal {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-regalo-content {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.95) 0%, rgba(192, 107, 253, 0.95) 100%);
+            border-radius: 30px;
+            padding: 60px 50px;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 30px 80px rgba(255, 107, 157, 0.6);
+            animation: scaleIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.5) rotate(-10deg);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .modal-regalo-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 2.5em;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            line-height: 1;
+        }
+
+        .modal-regalo-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .tulipanes-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            border-radius: 30px;
+        }
+
+        .tulipan {
+            position: absolute;
+            font-size: 3em;
+            animation: floatTulip 15s infinite ease-in-out;
+            opacity: 0.7;
+            filter: drop-shadow(0 5px 10px rgba(255, 255, 255, 0.3));
+        }
+
+        .tulipan:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+            animation-duration: 12s;
+        }
+
+        .tulipan:nth-child(2) {
+            left: 20%;
+            animation-delay: 2s;
+            animation-duration: 14s;
+        }
+
+        .tulipan:nth-child(3) {
+            left: 30%;
+            animation-delay: 1s;
+            animation-duration: 13s;
+        }
+
+        .tulipan:nth-child(4) {
+            left: 40%;
+            animation-delay: 3s;
+            animation-duration: 15s;
+        }
+
+        .tulipan:nth-child(5) {
+            left: 50%;
+            animation-delay: 1.5s;
+            animation-duration: 11s;
+        }
+
+        .tulipan:nth-child(6) {
+            left: 60%;
+            animation-delay: 2.5s;
+            animation-duration: 13s;
+        }
+
+        .tulipan:nth-child(7) {
+            left: 70%;
+            animation-delay: 0.5s;
+            animation-duration: 14s;
+        }
+
+        .tulipan:nth-child(8) {
+            left: 80%;
+            animation-delay: 3.5s;
+            animation-duration: 12s;
+        }
+
+        .tulipan:nth-child(9) {
+            left: 15%;
+            animation-delay: 2s;
+            animation-duration: 16s;
+        }
+
+        .tulipan:nth-child(10) {
+            left: 85%;
+            animation-delay: 1s;
+            animation-duration: 13s;
+        }
+
+        @keyframes floatTulip {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .regalo-mensaje {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+        }
+
+        .regalo-emoji {
+            font-size: 5em;
+            margin-bottom: 20px;
+            animation: pulseHeart 2s ease-in-out infinite;
+            filter: drop-shadow(0 10px 30px rgba(255, 255, 255, 0.5));
+        }
+
+        @keyframes pulseHeart {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        .regalo-titulo {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            line-height: 1.2;
+        }
+
+        .regalo-texto {
+            font-size: 1.2em;
+            line-height: 1.9;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0.95;
+        }
+
+        .regalo-firma {
+            font-size: 1.3em;
+            font-weight: 600;
+            font-style: italic;
+            margin-top: 25px;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .modal-regalo-content {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            .regalo-titulo {
+                font-size: 2em;
+            }
+
+            .regalo-texto {
+                font-size: 1em;
+            }
+
+            .tulipan {
+                font-size: 2em;
+            }
+
+            .modal-regalo-close {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 2em;
+            }
         }
     </style>
 </head>
 <body>
-<!-- NAVBAR -->
+
 <nav class="navbar">
     <div class="nav-brand">💕 Para Markitos</div>
     <div class="nav-links">
@@ -518,16 +1145,15 @@
     </div>
 </nav>
 
-<!-- HERO BENTO BOX -->
+
 <section class="hero-section" id="inicio">
-    <!-- Hero Principal -->
+
     <div class="bento-card hero-main">
         <h1>Para Ti,<br>Mi Amor</h1>
         <p>Cada momento contigo es un capítulo especial en nuestra historia. Esta es nuestra historia de amor.</p>
         <div class="hero-emoji">💕</div>
     </div>
 
-    <!-- Contador -->
     <div class="bento-card contador-card">
         <h3>⏰ Tiempo Juntos</h3>
         <div class="contador-display">
@@ -546,7 +1172,7 @@
         </div>
     </div>
 
-    <!-- Stats -->
+
     <div class="bento-card stats-card">
         <h3>📊 Nuestros Números</h3>
         <div class="stat-item">
@@ -564,7 +1190,7 @@
     </div>
 </section>
 
-<!-- TIMELINE DE CITAS -->
+
 <section class="timeline-section" id="citas">
     <h2 class="section-title">📅 Nuestras Citas Especiales</h2>
     <div class="timeline-grid">
@@ -624,7 +1250,7 @@
                     <h4>Simplemente estar juntos</h4>
                     <p>Fuimos al centro comercial y pasamos el rato besándonos y abrazándonos.
                         Al final te invité a comer, y ese momentico juntos fue lo mejor del día.</p>
-                    <div class="fecha">10 Mayo 2024</div>
+                    <div class="fecha">5 Noviembre 2025</div>
                 </div>
             </div>
         </div>
@@ -662,7 +1288,7 @@
 <section class="gallery-section" id="fotos">
     <h2 class="section-title">📸 Colección de Markitos</h2>
     <div class="gallery-grid">
-        <div class="foto-card">
+        <div class="foto-card" onclick="abrirModal('/img/markitos01.jpg')">
             <div class="foto-img">
                 <img src="/img/markitos01.jpg" alt="Descripción de la foto">
             </div>
@@ -672,7 +1298,7 @@
             </div>
         </div>
 
-        <div class="foto-card">
+        <div class="foto-card" onclick="abrirModal('/img/markitos02.jpg')">
             <div class="foto-img">
                 <img src="/img/markitos02.jpg" alt="Descripción de la foto">
             </div>
@@ -682,7 +1308,7 @@
             </div>
         </div>
 
-        <div class="foto-card">
+        <div class="foto-card" onclick="abrirModal('/img/markitos03.jpg')">
             <div class="foto-img">
                 <img src="/img/markitos03.jpg" alt="Descripción de la foto">
             </div>
@@ -692,7 +1318,7 @@
             </div>
         </div>
 
-        <div class="foto-card">
+        <div class="foto-card" onclick="abrirModal('/img/markitos04.jpg')">
             <div class="foto-img">
                 <img src="/img/markitos04.jpg" alt="Descripción de la foto">
             </div>
@@ -702,7 +1328,7 @@
             </div>
         </div>
 
-        <div class="foto-card">
+        <div class="foto-card" onclick="abrirModal('/img/markitos05.jpg')">
             <div class="foto-img">
                 <img src="/img/markitos05.jpg" alt="Descripción de la foto">
             </div>
@@ -712,7 +1338,7 @@
             </div>
         </div>
 
-        <div class="foto-card">
+        <div class="foto-card" onclick="abrirModal('/img/markitos06.jpg')">
             <div class="foto-img">
                 <img src="/img/markitos06.jpg" alt="Descripción de la foto">
             </div>
@@ -722,27 +1348,27 @@
             </div>
         </div>
 
-        <div class="foto-card">
+        <div class="foto-card" onclick="abrirModal('/img/markitos07.jpg')">
             <div class="foto-img">
                 <img src="/img/markitos07.jpg" alt="Descripción de la foto">
             </div>
             <div class="foto-overlay">
-                <h4>Aventura</h4>
-                <p>Cada aventura es especial.</p>
+                <h4>Foto Casual</h4>
+                <p>Esta foto me la enviaste justo despues de que llegaste a bogota.</p>
             </div>
         </div>
 
-        <div class="foto-card">
+        <div class="foto-card" onclick="abrirModal('/img/markitos08.jpg')">
             <div class="foto-img">
                 <img src="/img/markitos08.jpg" alt="Descripción de la foto">
             </div>
             <div class="foto-overlay">
-                <h4>Momento Divertido</h4>
-                <p>Me encanta reír contigo.</p>
+                <h4>Momento Contigo</h4>
+                <p>Te veías muy lindo usando mis gafas</p>
             </div>
         </div>
 
-        <div class="foto-card">
+        <div class="foto-card" onclick="abrirModal('/img/markitos09.jpg')">
             <div class="foto-img">
                 <img src="/img/markitos09.jpg" alt="Descripción de la foto">
             </div>
@@ -752,7 +1378,7 @@
             </div>
         </div>
 
-        <div class="foto-card">
+        <div class="foto-card" onclick="abrirModal('/img/markitos010.jpg')">
             <div class="foto-img">
                 <img src="/img/markitos010.jpg" alt="Descripción de la foto">
             </div>
@@ -764,11 +1390,114 @@
     </div>
 </section>
 
+<section class="quiz-section" id="quiz">
+    <h2 class="section-title">🎲 ¿Qué tan bien me conoces?</h2>
+    <div class="quiz-container">
+        <div class="quiz-content">
+
+            <div class="question-container active" data-question="1">
+                <div class="question-title">Pregunta 1 de 4</div>
+                <div class="question-text">¿Cuál es mi comida favorita?</div>
+                <div class="options">
+                    <button class="option-btn" onclick="checkAnswer(1, 'Pizza Hawaiana', true)">🍕 Pizza Hawaiana</button>
+                    <button class="option-btn" onclick="checkAnswer(1, 'Hamburguesa', false)">🍔 Hamburguesa</button>
+                    <button class="option-btn" onclick="checkAnswer(1, 'Sushi', false)">🍣 Sushi</button>
+                    <button class="option-btn" onclick="checkAnswer(1, 'Tacos', false)">🌮 Tacos</button>
+                    <button class="option-btn" onclick="checkAnswer(1, 'Pasta', false)">🍝 Pasta</button>
+                </div>
+                <div class="feedback" id="feedback1"></div>
+                <button class="next-btn" id="next1" onclick="nextQuestion(2)">Siguiente →</button>
+            </div>
+
+            <div class="question-container" data-question="2">
+                <div class="question-title">Pregunta 2 de 4</div>
+                <div class="question-text">¿Cuál es mi género musical favorito?</div>
+                <div class="options">
+                    <button class="option-btn" onclick="checkAnswer(2, 'Pop', true)">🎵 Pop</button>
+                    <button class="option-btn" onclick="checkAnswer(2, 'Rock', false)">🎸 Rock</button>
+                    <button class="option-btn" onclick="checkAnswer(2, 'Salsa', false)">💃 Salsa</button>
+                    <button class="option-btn" onclick="checkAnswer(2, 'Electrónica', false)">🎧 Electrónica</button>
+                    <button class="option-btn" onclick="checkAnswer(2, 'Ninguna', false)">❌ Ninguna de las anteriores</button>
+                </div>
+                <div class="feedback" id="feedback2"></div>
+                <button class="next-btn" id="next2" onclick="nextQuestion(3)">Siguiente →</button>
+            </div>
+
+            <div class="question-container" data-question="3">
+                <div class="question-title">Pregunta 3 de 4</div>
+                <div class="question-text">¿Cuál es mi color favorito?</div>
+                <div class="options">
+                    <button class="option-btn" onclick="checkAnswer(3, 'Azul', true, true)">💙 Azul</button>
+                    <button class="option-btn" onclick="checkAnswer(3, 'Rojo', false)">❤️ Rojo</button>
+                    <button class="option-btn" onclick="checkAnswer(3, 'Negro', false)">🖤 Negro</button>
+                    <button class="option-btn" onclick="checkAnswer(3, 'Café', false)">🤎 Café</button>
+                </div>
+                <div class="feedback" id="feedback3"></div>
+                <button class="next-btn" id="next3" onclick="nextQuestion(4)">Siguiente →</button>
+            </div>
+
+            <div class="question-container" data-question="4">
+                <div class="question-title">Pregunta 4 de 4</div>
+                <div class="question-text">¿Qué pienso de ti?</div>
+                <div class="options">
+                    <button class="option-btn" onclick="checkAnswer(4, 'hermoso', false)">😍 Eres hermoso</button>
+                    <button class="option-btn" onclick="checkAnswer(4, 'mejor', false)">⭐ La mejor persona que he conocido</button>
+                    <button class="option-btn" onclick="checkAnswer(4, 'tonto', false)">🤪 Eres un tonto</button>
+                    <button class="option-btn" onclick="checkAnswer(4, 'casamos', false)">💍 Nos casamos?</button>
+                    <button class="option-btn" onclick="checkAnswer(4, 'todas', true)">💕 Todas las anteriores</button>
+                </div>
+                <div class="feedback" id="feedback4"></div>
+                <button class="next-btn" id="next4" onclick="showResults()">Ver Resultados →</button>
+            </div>
+
+            <div class="quiz-result" id="quizResult">
+                <div class="result-emoji" id="resultEmoji">💕</div>
+                <div class="result-title" id="resultTitle">¡Terminaste!</div>
+                <div class="result-text" id="resultText"></div>
+                <button class="restart-btn" onclick="restartQuiz()">🔄 Volver a intentar</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="dedicatoria-section" id="dedicatoria">
+    <h2 class="section-title">🎤 Dedicado a tus artistas favoritas</h2>
+    <div class="dedicatoria-grid">
+        <div class="artist-card">
+            <div class="artist-emoji">🎀</div>
+            <div class="artist-name">Sabrina Carpenter</div>
+            <p class="artist-message">
+                A través de sus canciones aprendí que el amor puede ser divertido, intenso y completamente impredecible.
+                Gracias por la música que me hace pensar en ti, mi amor.
+            </p>
+        </div>
+
+        <div class="artist-card">
+            <div class="artist-emoji">✨</div>
+            <div class="artist-name">Taylor Swift</div>
+            <p class="artist-message">
+                Aún no hemos tenido la oportunidad de escuchar a Taylor juntos,
+                pero quiero que algún día me compartas tus canciones favoritas.
+                Te amo, Markitos.
+            </p>
+
+        </div>
+    </div>
+</section>
 <footer class="footer">
     <p>
         Cada momento contigo es un regalo. Gracias por llenar mis días de amor y felicidad.
         Esta página es solo un reflejo de todo lo que siento por ti. Te amo hoy, mañana y siempre.
     </p>
+
+    <div class="gift-box" onclick="abrirModalRegalo()">
+        <div class="gift-lid">
+            <div class="gift-bow">🎀</div>
+        </div>
+        <div class="gift-base">🎁</div>
+        <div class="gift-text">¡Haz clic para abrir tu regalo!</div>
+    </div>
+
     <div class="footer-heart">💕</div>
 </footer>
 
@@ -776,7 +1505,7 @@
 
 <script>
     function actualizarContador() {
-        const fechaInicio = new Date('2024-01-15T00:00:00');
+        const fechaInicio = new Date('2025-11-17T00:00:00');
         const ahora = new Date();
         const diferencia = ahora - fechaInicio;
 
@@ -796,7 +1525,6 @@
         carta.classList.toggle('volteada');
     }
 
-    // Efecto mouse para cards
     document.querySelectorAll('.bento-card').forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
@@ -806,6 +1534,163 @@
             card.style.setProperty('--mouse-y', `${y}%`);
         });
     });
+
+    let correctAnswers = 0;
+    let currentQuestion = 1;
+
+    function checkAnswer(questionNum, answer, isCorrect, isSpecial = false) {
+        const feedback = document.getElementById('feedback' + questionNum);
+        const nextBtn = document.getElementById('next' + questionNum);
+        const buttons = document.querySelectorAll(`[data-question="${questionNum}"] .option-btn`);
+
+        buttons.forEach(btn => btn.style.pointerEvents = 'none');
+
+        event.target.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+        if (isCorrect) {
+            correctAnswers++;
+
+            if (questionNum === 1) {
+                feedback.innerHTML = '¡Exacto! 🍕 Me encanta la pizza hawaiana, especialmente cuando la compartimos juntos 💕';
+            } else if (questionNum === 2) {
+                feedback.innerHTML = '¡Correcto! 🎵 El pop es mi género favorito. 👑';
+            } else if (questionNum === 3 && isSpecial) {
+                feedback.innerHTML = 'Me gusta el color azul, porque es el color de tus ojos pero me gusta más el color café y tú ya sabes por qué ;) 💙';
+            } else if (questionNum === 4) {
+                feedback.innerHTML = '¡Perfecto! 💕 Todas esas cosas son verdad. Eres hermoso, eres la mejor persona que he conocido, a veces eres un tonto adorable y sí, me quiero casar contigo algún día 💍';
+            }
+
+            feedback.className = 'feedback correct show';
+        } else {
+
+            if (questionNum === 1) {
+                feedback.innerHTML = '¡Noooo! 😅 Claramente necesitamos más citas para que me conozcas mejor. ¡La respuesta era Pizza Hawaiana!';
+            } else if (questionNum === 2) {
+                feedback.innerHTML = '¡Ay no! 🤦 Aunque esa música está bien, mi corazón le pertenece al Pop';
+            } else if (questionNum === 3) {
+                feedback.innerHTML = '¡Casi! 😊 Aunque el color azul 💙 es hermoso ya que azul son tus ojos, el color café tiene algo especial que solo tu conoces ;)';
+            } else if (questionNum === 4) {
+                feedback.innerHTML = '¡Jajaja! 😂 Eso también es cierto, pero faltaron las otras opciones. ¡La respuesta correcta era TODAS LAS ANTERIORES!';
+            }
+
+            feedback.className = 'feedback incorrect show';
+        }
+
+        nextBtn.classList.add('show');
+    }
+
+    function nextQuestion(nextNum) {
+        document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+        document.querySelector(`[data-question="${nextNum}"]`).classList.add('active');
+        currentQuestion = nextNum;
+    }
+
+    function showResults() {
+        document.querySelector(`[data-question="4"]`).classList.remove('active');
+        const resultDiv = document.getElementById('quizResult');
+        const resultEmoji = document.getElementById('resultEmoji');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultText = document.getElementById('resultText');
+
+        const percentage = (correctAnswers / 4) * 100;
+
+        if (percentage === 100) {
+            resultEmoji.textContent = '🏆';
+            resultTitle.textContent = '¡PERFECTO!';
+            resultText.textContent = '¡Wow! Me conoces perfectamente 💕 Eres increíble y cada día me enamoro más de ti. ¡Eres mi persona favorita en todo el mundo!';
+        } else if (percentage >= 75) {
+            resultEmoji.textContent = '😍';
+            resultTitle.textContent = '¡Muy bien!';
+            resultText.textContent = `¡Acertaste ${correctAnswers} de 4! Me conoces bastante bien mi amor 💕 Cada día que pasamos juntos aprendes más de mí y yo de ti.`;
+        } else if (percentage >= 50) {
+            resultEmoji.textContent = '🥰';
+            resultTitle.textContent = '¡Buen intento!';
+            resultText.textContent = `Acertaste ${correctAnswers} de 4. No está mal, pero claramente necesitamos más tiempo juntos para que me conozcas mejor 😊💕`;
+        } else {
+            resultEmoji.textContent = '😅';
+            resultTitle.textContent = '¡Ups!';
+            resultText.textContent = `Solo acertaste ${correctAnswers} de 4... ¡pero no te preocupes! Tenemos toda una vida para conocernos mejor mi amor 💕`;
+        }
+
+        resultDiv.classList.add('show');
+    }
+
+    function restartQuiz() {
+        correctAnswers = 0;
+        currentQuestion = 1;
+        document.querySelectorAll('.question-container').forEach(container => {
+            container.classList.remove('active');
+            const buttons = container.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('correct', 'incorrect');
+                btn.style.pointerEvents = 'auto';
+            });
+            container.querySelector('.feedback').className = 'feedback';
+            container.querySelector('.next-btn').classList.remove('show');
+        });
+
+        document.getElementById('quizResult').classList.remove('show');
+        document.querySelector('[data-question="1"]').classList.add('active');
+    }
+    function abrirModalRegalo() {
+        const modal = document.getElementById('modalRegalo');
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarModalRegalo(event) {
+        if (event.target.id === 'modalRegalo' || event.target.classList.contains('modal-regalo-close')) {
+            const modal = document.getElementById('modalRegalo');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            event.stopPropagation();
+        }
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modalRegalo = document.getElementById('modalRegalo');
+            if (modalRegalo.classList.contains('active')) {
+                modalRegalo.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    });
 </script>
+
+<div class="modal-regalo" id="modalRegalo" onclick="cerrarModalRegalo(event)">
+    <div class="modal-regalo-content">
+        <button class="modal-regalo-close" onclick="cerrarModalRegalo(event)">×</button>
+
+
+        <div class="tulipanes-container">
+            <div class="tulipan">🌷</div>
+            <div class="tulipan">🌷</div>
+            <div class="tulipan">🌷</div>
+            <div class="tulipan">🌷</div>
+            <div class="tulipan">🌷</div>
+            <div class="tulipan">🌷</div>
+            <div class="tulipan">🌷</div>
+            <div class="tulipan">🌷</div>
+            <div class="tulipan">🌷</div>
+            <div class="tulipan">🌷</div>
+        </div>
+
+        <div class="regalo-mensaje">
+            <div class="regalo-emoji">💐</div>
+            <h2 class="regalo-titulo">Un Ramo Digital Para Ti</h2>
+            <p class="regalo-texto">
+                Estas flores son especiales porque nunca se marchitarán,
+                así como mi amor por ti nunca se desvanecerá.
+                Cada tulipán representa un momento especial que hemos compartido,
+                y cada uno de ellos me recuerda lo afortunado que soy de tenerte en mi vida.
+                <br><br>
+                Eres mi flor más hermosa, mi amor más puro y mi razón para sonreír cada día.
+                Te amo con todo mi corazón, mi Markitos hermoso 💕
+            </p>
+            <div class="regalo-firma">Con todo mi amor, para ti 💕</div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -21,7 +21,6 @@
             position: relative;
         }
 
-        /* Fondo con imagen difuminada */
         body::before {
             content: '';
             position: fixed;
@@ -234,7 +233,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>🎵 Wordle 1989 💕</h1>
+    <h1>Wordle 1989 💕</h1>
     <p class="subtitle">Adivina la palabra del álbum de Taylor Swift</p>
 
     <div class="intentos">Intentos: <span id="numeroIntentos">0</span>/6</div>
@@ -256,7 +255,7 @@
     </div>
 
     <button class="btn btn-reiniciar" onclick="reiniciarJuego()">
-        🔄 Nuevo Juego
+         Nuevo Juego
     </button>
 
     <button class="btn btn-amor" id="btnAmor" onclick="irAPaginaAmor()">
@@ -274,7 +273,6 @@
     const maxIntentos = 6;
     let juegoTerminado = false;
 
-    // Crear el tablero inicial vacío
     function inicializarTablero() {
         const gameBoard = document.getElementById('gameBoard');
         gameBoard.innerHTML = '';
@@ -295,20 +293,17 @@
         }
     }
 
-    // Inicializar el juego cuando carga la página
     window.addEventListener('DOMContentLoaded', function() {
         inicializarTablero();
         document.getElementById('palabraInput').focus();
     });
 
-    // Permitir envío con Enter
     document.getElementById('palabraInput').addEventListener('keypress', function(e) {
         if (e.key === 'Enter' && !juegoTerminado) {
             verificarPalabra();
         }
     });
 
-    // Convertir automáticamente a mayúsculas mientras escribe
     document.getElementById('palabraInput').addEventListener('input', function(e) {
         this.value = this.value.toUpperCase().replace(/[^A-Z]/g, '');
     });
@@ -334,7 +329,7 @@
         const palabra = input.value.trim().toUpperCase();
 
         if (palabra.length !== 5) {
-            mostrarMensaje('⚠️ La palabra debe tener exactamente 5 letras', 'error');
+            mostrarMensaje('La palabra debe tener exactamente 5 letras', 'error');
             input.focus();
             return;
         }
@@ -358,7 +353,7 @@
             })
             .then(data => {
                 if (data.error) {
-                    mostrarMensaje('❌ ' + data.error, 'error');
+                    mostrarMensaje(' ' + data.error, 'error');
                     btnVerificar.disabled = false;
                     btnVerificar.textContent = 'Intentar';
                     return;
@@ -391,7 +386,7 @@
                 else if (intentos >= maxIntentos) {
                     juegoTerminado = true;
                     setTimeout(() => {
-                        mostrarMensaje('😔 Se acabaron los intentos. Intenta de nuevo con un nuevo juego.', 'error');
+                        mostrarMensaje('Se acabaron los intentos. Intenta de nuevo con un nuevo juego.', 'error');
                         input.disabled = true;
                         btnVerificar.disabled = true;
                         btnVerificar.textContent = '✗ Perdiste';
@@ -405,7 +400,7 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                mostrarMensaje('❌ Ocurrió un error. Intenta de nuevo.', 'error');
+                mostrarMensaje('Ocurrió un error. Intenta de nuevo.', 'error');
                 btnVerificar.disabled = false;
                 btnVerificar.textContent = 'Intentar';
             });
@@ -413,7 +408,7 @@
 
     function reiniciarJuego() {
         const mensajeDiv = document.getElementById('mensajeDiv');
-        mensajeDiv.textContent = '🔄 Reiniciando...';
+        mensajeDiv.textContent = 'Reiniciando...';
         mensajeDiv.className = 'mensaje exito';
 
         fetch('/reiniciar', {
@@ -435,12 +430,12 @@
                 document.getElementById('btnAmor').style.display = 'none';
 
                 inicializarTablero();
-                mostrarMensaje('✓ ¡Nuevo juego iniciado! Buena suerte 🍀', 'exito');
+                mostrarMensaje('¡Nuevo juego iniciado! Buena suerte 🍀', 'exito');
                 document.getElementById('palabraInput').focus();
             })
             .catch(error => {
                 console.error('Error:', error);
-                mostrarMensaje('❌ Error al reiniciar. Recarga la página.', 'error');
+                mostrarMensaje('Error al reiniciar. Recarga la página.', 'error');
             });
     }
 
